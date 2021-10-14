@@ -11,6 +11,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({
   list: {
@@ -18,6 +19,9 @@ const useStyles = makeStyles({
   },
   fullList: {
     width: "auto",
+  },
+  title: {
+    flexGrow: 1,
   },
 });
 
@@ -52,14 +56,11 @@ export default function SwipeableTemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem>
+          <Typography variant="h6" className={classes.title}>
+            News
+          </Typography>
+        </ListItem>
       </List>
       <Divider />
       <List>

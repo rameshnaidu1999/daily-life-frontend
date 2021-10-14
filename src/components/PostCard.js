@@ -15,10 +15,12 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    maxWidth: 365,
+    marginBottom: 8,
   },
   media: {
     height: 0,
@@ -61,7 +63,9 @@ export default function RecipeReviewCard({ post }) {
           </IconButton>
         }
         title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        subheader={moment()
+          .startOf(post.createdAt.split("T")[0], "hours")
+          .fromNow()}
       />
       <CardMedia
         className={classes.media}
