@@ -12,6 +12,11 @@ import AddIcon from "@material-ui/icons/Add";
 import Sidebar from "./Sidebar";
 import AddPost from "./AddPost";
 import Modal from "@material-ui/core/Modal";
+import Avatar from "@material-ui/core/Avatar";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import { Link } from "react-router-dom";
+import { Paper } from "@material-ui/core";
 
 function getModalStyle() {
   const top = 50;
@@ -42,12 +47,25 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
     textAlign: "center",
   },
+  paper2: {
+    marginRight: theme.spacing(2),
+  },
 }));
 
 export default function ButtonAppBar({ mode, setMode }) {
   const classes = useStyles();
+
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -79,10 +97,48 @@ export default function ButtonAppBar({ mode, setMode }) {
           <Typography variant="h6" className={classes.title}>
             News
           </Typography>
-          <Button color="inherit">Login</Button>
-          <Fab color="primary" aria-label="add" onClick={handleOpen}>
+          <Link to="/signin">
+            <Button
+              style={{ marginRight: 10 }}
+              variant="contained"
+              color="primary"
+            >
+              Login
+            </Button>
+          </Link>
+          <Link to="/signup">
+            <Button
+              style={{ marginRight: 10 }}
+              color="secondary"
+              variant="outlined"
+            >
+              Sign up
+            </Button>
+          </Link>
+          <Fab
+            color="primary"
+            size="small"
+            aria-label="add"
+            onClick={handleOpen}
+          >
             <AddIcon />
           </Fab>
+          <IconButton onClick={handleMenuClick}>
+            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+          </IconButton>
+          <Paper className={classes.paper2}>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+              <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            </Menu>
+          </Paper>
           <IconButton
             onClick={() => {
               setMode(!mode);
