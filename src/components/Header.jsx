@@ -17,6 +17,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link } from "react-router-dom";
 import { Paper } from "@material-ui/core";
+import Fade from "@material-ui/core/Fade";
 
 function getModalStyle() {
   const top = 50;
@@ -123,7 +124,11 @@ export default function ButtonAppBar({ mode, setMode }) {
           >
             <AddIcon />
           </Fab>
-          <IconButton onClick={handleMenuClick}>
+          <IconButton
+            onClick={handleMenuClick}
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+          >
             <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
           </IconButton>
           <Paper className={classes.paper2}>
@@ -132,7 +137,7 @@ export default function ButtonAppBar({ mode, setMode }) {
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
-              onClose={handleClose}
+              onClose={handleMenuClose}
             >
               <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
               <MenuItem onClick={handleMenuClose}>My account</MenuItem>
