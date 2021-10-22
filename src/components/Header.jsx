@@ -17,7 +17,6 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link } from "react-router-dom";
 import { Paper } from "@material-ui/core";
-import Fade from "@material-ui/core/Fade";
 
 function getModalStyle() {
   const top = 50;
