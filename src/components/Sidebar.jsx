@@ -80,9 +80,8 @@ export default function SwipeableTemporaryDrawer() {
     <div>
       {["left"].map((anchor) => (
         <React.Fragment key={"left"}>
-          <Button onClick={toggleDrawer("left", true)}>
-            <MenuIcon />
-          </Button>
+          <MenuIcon onClick={toggleDrawer("left", true)} />
+
           <SwipeableDrawer
             anchor={"left"}
             open={state["left"]}
