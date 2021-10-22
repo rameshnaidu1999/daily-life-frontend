@@ -15,7 +15,7 @@ import Modal from "@material-ui/core/Modal";
 import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Paper } from "@material-ui/core";
 
 function getModalStyle() {
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonAppBar({ mode, setMode }) {
   const classes = useStyles();
-
+  const history = useHistory();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -94,7 +94,11 @@ export default function ButtonAppBar({ mode, setMode }) {
           >
             <Sidebar />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography
+            variant="h6"
+            className={classes.title}
+            onClick={() => history.push("/")}
+          >
             News
           </Typography>
           <Link to="/signin">
@@ -115,14 +119,16 @@ export default function ButtonAppBar({ mode, setMode }) {
               Sign up
             </Button>
           </Link>
+          {/**
           <Fab
             color="primary"
             size="small"
             aria-label="add"
-            onClick={handleOpen}
+            onClick={() => history.push("/addpost")}
           >
             <AddIcon />
           </Fab>
+           */}
           <IconButton
             onClick={handleMenuClick}
             aria-controls="simple-menu"
@@ -138,7 +144,12 @@ export default function ButtonAppBar({ mode, setMode }) {
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
             >
-              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              <MenuItem
+                onClick={() => handleMenuClose && history.push("/profile")}
+              >
+                Profile
+              </MenuItem>
+
               <MenuItem onClick={handleMenuClose}>My account</MenuItem>
               <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
             </Menu>

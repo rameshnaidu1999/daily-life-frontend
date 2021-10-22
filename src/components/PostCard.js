@@ -15,7 +15,11 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import moment from "moment";
+import { Paper, MenuItem, Menu } from "@material-ui/core";
+import Modal from "./Modal";
+import { useHistory } from "react-router-dom";
+import axios from "../config/axios";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,12 +45,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RecipeReviewCard({ post }) {
+export default function RecipeReviewCard({ post, location }) {
   const classes = useStyles();
+  const history = useHistory();
   const [expanded, setExpanded] = React.useState(false);
+  const [isLiked, setIsLiked] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleClickVariant = (variant) => {
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar("Post Deleted", { variant });
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = (id) => {
+    console.log("delete", id);
+    axios
+      .delete(`/posts/delete/${id}`)
+      .then((res) => {
+        console.log("res", res);
+        handleMenuClose();
+        handleClickVariant("success");
+        // window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -58,19 +95,23 @@ export default function RecipeReviewCard({ post }) {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          location.pathname == "/" ? (
+            ""
+          ) : (
+            <IconButton aria-label="settings" onClick={handleMenuClick}>
+              <MoreVertIcon />
+            </IconButton>
+          )
         }
         title="Shrimp and Chorizo Paella"
-        subheader={moment()
-          .startOf(post.createdAt.split("T")[0], "hours")
-          .fromNow()}
+        //// subheader={post.createdAt.split("T")[0]}
+        // subheader={moment(postDate, "MMMM Do YYYY, h:mm:ss a")}
       />
       <CardMedia
         className={classes.media}
         image={post.postImageUrl}
         title="Paella dish"
+        onClick={() => history.push(`/viewpost/${post._id}`)}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
@@ -78,8 +119,11 @@ export default function RecipeReviewCard({ post }) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton
+          aria-label="add to favorites"
+          onClick={() => setIsLiked(!isLiked)}
+        >
+          <FavoriteIcon color={isLiked ? "secondary" : "inherit"} />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
@@ -126,6 +170,19 @@ export default function RecipeReviewCard({ post }) {
           </Typography>
         </CardContent>
       </Collapse>
+      <Paper className={classes.paper2}>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          {" "}
+          <MenuItem>Edit</MenuItem>
+          <MenuItem onClick={() => handleDelete(post._id)}>Delete</MenuItem>
+        </Menu>
+      </Paper>
     </Card>
   );
 }
