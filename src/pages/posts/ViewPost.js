@@ -25,6 +25,7 @@ import {
   Link,
   useParams,
 } from "react-router-dom";
+import { useGetPostByIdQuery } from "../../services/postService";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 400,
@@ -50,25 +51,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ViewPost() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-  const [post, setPost] = useState();
-
   let { id } = useParams();
-  console.log("id_here", id);
+  const [expanded, setExpanded] = React.useState(false);
+  const { data, isSuccess, isError } = useGetPostByIdQuery(id);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      const results = await axios.get(`/posts/get/${id}`);
-      setPost(results.data.post);
-      console.log("results", results.data.post);
-    }
-    fetchData();
-  }, []);
-
-  let postDate = post && post.createdAt.split("T")[0];
+  let postDate =
+    isSuccess && data && data.post && data.post.createdAt.split("T")[0];
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
@@ -81,7 +73,7 @@ export default function ViewPost() {
           spacing={3}
         >
           <Grid item xs={12} sm={6}>
-            {post && (
+            {isSuccess && data && data.post && (
               <Card className={classes.root}>
                 <CardHeader
                   avatar={
@@ -99,7 +91,8 @@ export default function ViewPost() {
                 />
                 <CardMedia
                   className={classes.media}
-                  image={post.postImageUrl}
+                  s
+                  image={data.post.postImageUrl}
                   title="Paella dish"
                 />
                 <CardContent>
@@ -108,7 +101,7 @@ export default function ViewPost() {
                     color="textSecondary"
                     component="p"
                   >
-                    {post.title}
+                    {data.post.title}
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>

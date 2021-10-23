@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-var URL = "https://daily-life-api.herokuapp.com/";
+var URL = "https://daily-life-api.herokuapp.com";
 export const postApi = createApi({
   reducerPath: "postApi",
   baseQuery: fetchBaseQuery({
@@ -16,7 +16,7 @@ export const postApi = createApi({
 
     getPostById: builder.query({
       query: (id) => ({
-        url: `/posts/${id}`,
+        url: `/posts/get/${id}`,
         method: "GET",
       }),
     }),

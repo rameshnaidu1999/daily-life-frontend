@@ -14,6 +14,7 @@ import axios from "../config/axios";
 import PostCard from "../components/PostCard";
 import { useLocation } from "react-router-dom";
 import CreatePost from "./posts/CreatePost";
+import { useGetAllPostQuery } from "../services/postService";
 
 // date.split("T")[0];
 
@@ -48,7 +49,7 @@ const Profile = () => {
   const classes = useStyles();
   const location = useLocation();
   const [posts, setPosts] = useState();
-
+  const { data, isError, isLoading, isSuccess } = useGetAllPostQuery();
   useEffect(() => {
     async function fetchData() {
       const results = await axios.get("/posts/getall");
@@ -116,10 +117,10 @@ const Profile = () => {
           >
             view posts
           </Typography>
-          {posts && posts.length > 0 && (
+          {isSuccess && !isError.data && data && data.data.length > 0 && (
             <Box mt={2}>
               <Grid container spacing={3}>
-                {posts.map((post) => (
+                {data.data.map((post) => (
                   <Grid item xs={12} sm={6} key={post._id}>
                     <PostCard post={post} location={location} />
                   </Grid>

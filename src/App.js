@@ -15,19 +15,9 @@ import { useGetAllPostQuery } from "./services/postService";
 
 const App = () => {
   const location = useLocation();
-  const [posts, setPosts] = useState();
   const [mode, setMode] = useState(true);
-  console.log("loc", location.pathname);
-  const responseInfo = useGetAllPostQuery();
-  console.log("responseInfo", responseInfo);
-  useEffect(() => {
-    async function fetchData() {
-      const results = await axios.get("/posts/getall");
-      setPosts(results.data.data);
-      console.log("results", results.data.data);
-    }
-    fetchData();
-  }, []);
+  const { data, isError, isFetching, isLoading, isSuccess } =
+    useGetAllPostQuery();
 
   const theme = React.useMemo(
     () =>
@@ -49,9 +39,10 @@ const App = () => {
               <Container>
                 <Box m={2}>
                   <Grid container spacing={3}>
-                    {posts &&
-                      posts.length > 0 &&
-                      posts.map((post) => (
+                    {isSuccess &&
+                      !isError.data &&
+                      data.data.length > 0 &&
+                      data.data.map((post) => (
                         <Grid item xs={12} sm={4}>
                           <PostCard post={post} location={location} />
                         </Grid>
