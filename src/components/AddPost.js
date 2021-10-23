@@ -2,6 +2,7 @@ import { Box, Button, Container, TextField } from "@material-ui/core";
 import axios from "../config/axios";
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { useSnackbar } from "notistack";
 import { useCreatePostMutation } from "../services/postService";
 
@@ -115,7 +116,13 @@ const AddPost = ({ handleClose }) => {
           */}
           <div className={classes.div}>
             <input
+              style={{
+                height: 100,
+                width: 200,
+                borderBlockColor: "WindowFrame",
+              }}
               type="file"
+              title="Select Image"
               accept="image/png, image/jpeg"
               onChange={(e) => setImage(e.target.files[0])}
             />
@@ -127,6 +134,7 @@ const AddPost = ({ handleClose }) => {
               disabled={!image}
               color="primary"
               onClick={uploadImage}
+              startIcon={<CloudUploadIcon />}
             >
               {url ? "uploaded" : "Upload Image"}
             </Button>
