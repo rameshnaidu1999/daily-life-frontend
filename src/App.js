@@ -11,12 +11,15 @@ import SignIn from "./pages/SigninPage";
 import SignUp from "./pages/SignupPage";
 import Profile from "./pages/Profile";
 import ViewPost from "./pages/posts/ViewPost";
+import { useGetAllPostQuery } from "./services/postService";
 
 const App = () => {
   const location = useLocation();
   const [posts, setPosts] = useState();
   const [mode, setMode] = useState(true);
   console.log("loc", location.pathname);
+  const responseInfo = useGetAllPostQuery();
+  console.log("responseInfo", responseInfo);
   useEffect(() => {
     async function fetchData() {
       const results = await axios.get("/posts/getall");
