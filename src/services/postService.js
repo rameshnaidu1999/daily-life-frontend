@@ -43,12 +43,9 @@ export const postApi = createApi({
     createPost: builder.mutation({
       query: (newPost) => {
         return {
-          url: `/posts`,
+          url: `/posts/create`,
           method: "POST",
           body: newPost,
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
         };
       },
     }),

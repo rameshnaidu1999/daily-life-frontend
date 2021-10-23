@@ -43,9 +43,6 @@ export default function SimpleModal({ title, state }) {
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">{title}</h2>
-      <p id="simple-modal-description">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-      </p>
       <AddPost handleClose={handleClose} />
     </div>
   );

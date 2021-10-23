@@ -3,6 +3,7 @@ import axios from "../config/axios";
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
+import { useCreatePostMutation } from "../services/postService";
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -17,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
 const AddPost = ({ handleClose }) => {
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [image, setImage] = useState("");
+  const [url, setUrl] = useState("");
+
+  const [createPost, res] = useCreatePostMutation();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -24,13 +29,47 @@ const AddPost = ({ handleClose }) => {
     // variant could be success, error, warning, info, or default
     enqueueSnackbar("Post created", { variant });
   };
+
+  const uploadImage = () => {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "yywae307");
+    data.append("cloud_name", "dtxgfrzye");
+    fetch("  https://api.cloudinary.com/v1_1/dtxgfrzye/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        setUrl(data.url);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const payload = {
+    title: title,
+    postImageUrl: url,
+  };
+  console.log("res", res);
+
+  const handleCreatePost = () => {
+    createPost(payload)
+      .then((res) => {
+        if (!res.isError) {
+          handleClose();
+          handleClickVariant("success");
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+  {
+    /*
   const createPost = (e) => {
     e.preventDefault();
     console.log("hekllo");
-    const payload = {
-      title: title,
-      postImageUrl: imageUrl,
-    };
+  
     axios
       .post("/posts/create", payload)
       .then((res) => {
@@ -45,6 +84,8 @@ const AddPost = ({ handleClose }) => {
         console.log("err", err);
       });
   };
+*/
+  }
   const classes = useStyles();
   return (
     <div>
@@ -56,10 +97,11 @@ const AddPost = ({ handleClose }) => {
               id="filled-basic"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              label="Title"
+              label="Caption"
               variant="outlined"
             />
           </div>
+          {/** 
           <div className={classes.div}>
             <TextField
               fullWidth
@@ -70,14 +112,39 @@ const AddPost = ({ handleClose }) => {
               variant="outlined"
             />
           </div>
+          */}
           <div className={classes.div}>
-            {" "}
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+          </div>
+          <div className={classes.div}>
             <Button
               variant="contained"
               fullWidth
-              disabled={!title || !imageUrl}
+              disabled={!image}
               color="primary"
-              onClick={createPost}
+              onClick={uploadImage}
+            >
+              {url ? "uploaded" : "Upload Image"}
+            </Button>
+            {url && (
+              <img
+                style={{ height: 200, width: 400, margin: 10 }}
+                alt="check"
+                src={url}
+              />
+            )}
+          </div>
+          <div className={classes.div}>
+            <Button
+              variant="contained"
+              fullWidth
+              disabled={!title || !url}
+              color="primary"
+              onClick={handleCreatePost}
             >
               Create Post
             </Button>
