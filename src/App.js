@@ -12,6 +12,7 @@ import SignUp from "./pages/SignupPage";
 import Profile from "./pages/Profile";
 import ViewPost from "./pages/posts/ViewPost";
 import { useGetAllPostQuery } from "./services/postService";
+import Alltodos from "./pages/todos/Alltodos";
 
 const App = () => {
   const location = useLocation();
@@ -48,6 +49,9 @@ const App = () => {
                         </Grid>
                       ))}
                   </Grid>
+                </Box>
+                <Box m={4}>
+                  <Alltodos />
                 </Box>
               </Container>
             </Route>
