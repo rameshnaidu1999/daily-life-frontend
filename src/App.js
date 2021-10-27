@@ -38,6 +38,9 @@ const App = () => {
           <Switch>
             <Route exact path="/">
               <Container>
+                <Box m={4}>
+                  <Alltodos />
+                </Box>
                 <Box m={2}>
                   <Grid container spacing={3}>
                     {isSuccess &&
@@ -49,9 +52,6 @@ const App = () => {
                         </Grid>
                       ))}
                   </Grid>
-                </Box>
-                <Box m={4}>
-                  <Alltodos />
                 </Box>
               </Container>
             </Route>
