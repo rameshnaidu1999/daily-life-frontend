@@ -41,7 +41,7 @@ export const todoApi = createApi({
     deleteTodo: builder.mutation({
       query: (num) => {
         return {
-          url: `/posts/${num}`,
+          url: `/todos/delete/${num}`,
           method: "DELETE",
         };
       },
@@ -50,7 +50,7 @@ export const todoApi = createApi({
     createTodo: builder.mutation({
       query: (newPost) => {
         return {
-          url: `/todo/create`,
+          url: `/todos/create`,
           method: "POST",
           body: newPost,
         };
