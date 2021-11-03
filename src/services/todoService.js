@@ -50,7 +50,7 @@ export const todoApi = createApi({
     createTodo: builder.mutation({
       query: (newPost) => {
         return {
-          url: `/todo/create`,
+          url: `/todos/create`,
           method: "POST",
           body: newPost,
         };

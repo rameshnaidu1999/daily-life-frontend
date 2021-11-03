@@ -59,6 +59,9 @@ const AddPost = ({ handleClose }) => {
         if (!res.isError) {
           handleClose();
           handleClickVariant("success");
+          window.setTimeout(function () {
+            window.location.reload();
+          }, 3000);
         }
       })
       .catch((err) => {
