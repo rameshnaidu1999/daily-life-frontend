@@ -41,7 +41,7 @@ export const todoApi = createApi({
     deleteTodo: builder.mutation({
       query: (num) => {
         return {
-          url: `/posts/${num}`,
+          url: `/todos/delete/${num}`,
           method: "DELETE",
         };
       },
